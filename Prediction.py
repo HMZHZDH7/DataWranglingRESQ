@@ -6,10 +6,6 @@ from sklearn.metrics import mean_squared_error
 import shap
 import numpy as np
 
-#ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
-#rasa 3.6.15 requires packaging<21.0,>=20.0, but you have packaging 24.0 which is incompatible.
-
-
 # Load the data
 data = pd.read_csv('Data/dataREanonymized_long.csv')
 
