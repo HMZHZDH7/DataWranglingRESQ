@@ -10,7 +10,7 @@ import numpy as np
 data = pd.read_csv('Data/dataREanonymized_long.csv')
 
 # Specify the target variable you want to predict
-target_variable = 'door_to_needle'
+target_variable = 'discharge_mrs'
 
 # Extract all unique predictor variable names from the "variable" column
 predictor_variables = data['variable'].unique()
