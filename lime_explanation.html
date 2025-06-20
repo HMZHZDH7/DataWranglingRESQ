@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divFI0QYRLFP0JNPQ8"></div>
+        <div class="lime top_div" id="top_divNCPH5JU2ZYFJ2X0"></div>
         
         <script>
-        var top_div = d3.select('#top_divFI0QYRLFP0JNPQ8').classed('lime top_div', true);
+        var top_div = d3.select('#top_divNCPH5JU2ZYFJ2X0').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["<=50K", ">50K"], [0.9898054599761963, 0.010194537229835987]);
+            var pp = new lime.PredictProba(pp_svg, ["Poor Outcome", "Good Outcome"], [0.18431466817855835, 0.8156853318214417]);
             
         
         var exp_div;
-            var exp = new lime.Explanation(["<=50K", ">50K"]);
+            var exp = new lime.Explanation(["Poor Outcome", "Good Outcome"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["capital-gain <= 0.00", -0.7201930484586645], ["hours-per-week <= 40.00", -0.09175507852860008], ["native-country <= 38.00", 0.08596832889275047], ["age <= 28.00", -0.07068943948695289], ["capital-loss <= 0.00", -0.05102355789572715], ["1.00 < relationship <= 3.00", -0.045025306495860985], ["2.00 < marital-status <= 4.00", -0.0310353707779721], ["workclass <= 2.00", 0.02318106282506319], ["0.00 < sex <= 1.00", 0.016891276541951505], ["9.00 < education-num <= 10.00", 0.009077152652655058]], 1, exp_div);
+                exp.show([["discharge_nihss_score <= 2.00", 0.7036459943638043], ["discharge_edoxaban <= 0.00", -0.2612411595137308], ["prestroke_mrs <= 0.00", 0.23989798704906692], ["discharge_ticlopidine <= 0.00", -0.15673681037578727], ["discharge_heparin <= 0.00", 0.13665002625205283], ["before_onset_dipyridamol <= 0.00", -0.05258188885963337], ["hypoperfusion_core <= 73.00", -0.04914459195534818], ["before_onset_ticlopidine <= 0.00", 0.0476846869645029], ["before_onset_prasugrel <= 0.00", 0.04198577892263779], ["risk_smoker <= 0.00", -0.03721902933501197]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["capital-gain", "0.00", -0.7201930484586645], ["hours-per-week", "40.00", -0.09175507852860008], ["native-country", "38.00", 0.08596832889275047], ["age", "23.00", -0.07068943948695289], ["capital-loss", "0.00", -0.05102355789572715], ["relationship", "2.00", -0.045025306495860985], ["marital-status", "4.00", -0.0310353707779721], ["workclass", "2.00", 0.02318106282506319], ["sex", "1.00", 0.016891276541951505], ["education-num", "10.00", 0.009077152652655058]], 1, raw_div);
+            exp.show_raw_tabular([["discharge_nihss_score", "2.00", 0.7036459943638043], ["discharge_edoxaban", "0.00", -0.2612411595137308], ["prestroke_mrs", "0.00", 0.23989798704906692], ["discharge_ticlopidine", "0.00", -0.15673681037578727], ["discharge_heparin", "0.00", 0.13665002625205283], ["before_onset_dipyridamol", "0.00", -0.05258188885963337], ["hypoperfusion_core", "73.00", -0.04914459195534818], ["before_onset_ticlopidine", "0.00", 0.0476846869645029], ["before_onset_prasugrel", "0.00", 0.04198577892263779], ["risk_smoker", "0.00", -0.03721902933501197]], 1, raw_div);
         
         </script>
         </body></html>

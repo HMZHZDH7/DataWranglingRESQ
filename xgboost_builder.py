@@ -34,14 +34,19 @@ df_wide = df_long_filtered.pivot(index='subject_id', columns='variable', values=
 df_wide = df_wide[df_wide['stroke_type'] == 'ischemic']
 df_wide = df_wide[df_wide['thrombolysis'] == '1']
 
+print(df_wide)
+
 # 3. Target variable extraction
 # If `three_m_mrs` is stored as a row in the long format, extract it:
 #target = df_wide['discharge_mrs'].to_numeric(df_wide['discharge_mrs'], errors='coerce')
 target = pd.to_numeric(df_wide['discharge_mrs'], errors='coerce')
 
-X = df_wide.drop(columns=['discharge_mrs', 'three_m_mrs', 'stroke_type', 'door_to_groin', 'thrombolysis'])
+X = df_wide.drop(columns=['discharge_mrs', 'three_m_mrs', 'stroke_type', 'door_to_groin', 'thrombolysis', 'subject_id',
+                          'bleeding_source', 'bleeding_volume_value', 'department_type', 'dysphagia_screening_type',
+                          'gender', 'hospitalized_in', 'hunt_hess_score', 'ich_score', 'imaging_type', 'no_thrombolysis_reason',
+                          'stroke_mimics_diagnosis'])
 
-
+X = X.dropna(axis=1, how='all')
 
 # 4. Preprocessing
 # Convert all data to numeric if possible
