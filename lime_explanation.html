@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divNCPH5JU2ZYFJ2X0"></div>
+        <div class="lime top_div" id="top_div8YI27NGUIWRGP3J"></div>
         
         <script>
-        var top_div = d3.select('#top_divNCPH5JU2ZYFJ2X0').classed('lime top_div', true);
+        var top_div = d3.select('#top_div8YI27NGUIWRGP3J').classed('lime top_div', true);
         
             var pp_div = top_div.append('div')
                                 .classed('lime predict_proba', true);
             var pp_svg = pp_div.append('svg').style('width', '100%');
-            var pp = new lime.PredictProba(pp_svg, ["Poor Outcome", "Good Outcome"], [0.18431466817855835, 0.8156853318214417]);
+            var pp = new lime.PredictProba(pp_svg, ["Poor Outcome", "Good Outcome"], [0.6469169855117798, 0.3530829846858978]);
             
         
         var exp_div;
             var exp = new lime.Explanation(["Poor Outcome", "Good Outcome"]);
         
                 exp_div = top_div.append('div').classed('lime explanation', true);
-                exp.show([["discharge_nihss_score <= 2.00", 0.7036459943638043], ["discharge_edoxaban <= 0.00", -0.2612411595137308], ["prestroke_mrs <= 0.00", 0.23989798704906692], ["discharge_ticlopidine <= 0.00", -0.15673681037578727], ["discharge_heparin <= 0.00", 0.13665002625205283], ["before_onset_dipyridamol <= 0.00", -0.05258188885963337], ["hypoperfusion_core <= 73.00", -0.04914459195534818], ["before_onset_ticlopidine <= 0.00", 0.0476846869645029], ["before_onset_prasugrel <= 0.00", 0.04198577892263779], ["risk_smoker <= 0.00", -0.03721902933501197]], 1, exp_div);
+                exp.show([["discharge_nihss_score <= 2.00", 0.7158983251414539], ["risk_previous_hemorrhagic_stroke <= 0.00", -0.31657030765178684], ["prestroke_mrs <= 0.00", 0.2334437148933994], ["discharge_heparin <= 0.00", 0.12396083664364296], ["before_onset_prasugrel <= 0.00", 0.06831430518969275], ["before_onset_ticlopidine <= 0.00", -0.054182738780610175], ["before_onset_dipyridamol <= 0.00", -0.04439504810401138], ["risk_smoker <= 0.00", -0.03969651189454432], ["hypoperfusion_core <= 73.00", -0.03780030808140087], ["risk_previous_ischemic_stroke <= 0.00", 0.031266459989551604]], 1, exp_div);
                 
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["discharge_nihss_score", "2.00", 0.7036459943638043], ["discharge_edoxaban", "0.00", -0.2612411595137308], ["prestroke_mrs", "0.00", 0.23989798704906692], ["discharge_ticlopidine", "0.00", -0.15673681037578727], ["discharge_heparin", "0.00", 0.13665002625205283], ["before_onset_dipyridamol", "0.00", -0.05258188885963337], ["hypoperfusion_core", "73.00", -0.04914459195534818], ["before_onset_ticlopidine", "0.00", 0.0476846869645029], ["before_onset_prasugrel", "0.00", 0.04198577892263779], ["risk_smoker", "0.00", -0.03721902933501197]], 1, raw_div);
+            exp.show_raw_tabular([["discharge_nihss_score", "2.00", 0.7158983251414539], ["risk_previous_hemorrhagic_stroke", "0.00", -0.31657030765178684], ["prestroke_mrs", "0.00", 0.2334437148933994], ["discharge_heparin", "0.00", 0.12396083664364296], ["before_onset_prasugrel", "0.00", 0.06831430518969275], ["before_onset_ticlopidine", "0.00", -0.054182738780610175], ["before_onset_dipyridamol", "0.00", -0.04439504810401138], ["risk_smoker", "0.00", -0.03969651189454432], ["hypoperfusion_core", "73.00", -0.03780030808140087], ["risk_previous_ischemic_stroke", "0.00", 0.031266459989551604]], 1, raw_div);
         
         </script>
         </body></html>

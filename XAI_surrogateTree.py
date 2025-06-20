@@ -4,12 +4,16 @@ import joblib
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
+import networkx as nx
 matplotlib.use('TkAgg')  # or 'Qt5Agg' if you have PyQt5 installed
 import seaborn as sns
-from lime.lime_tabular import LimeTabularExplainer
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from dtreeviz import model as dtreeviz_model
+
+
 # 1. Load trained model
 model_path = 'Data/XGboostCat20250620_133457.pkl'  # Replace with your actual file if needed
-model = joblib.load(model_path)
+xg = joblib.load(model_path)
 
 # 2. Load and filter long-format data
 df_long = pd.read_csv("Data/dataREanonymized_long.csv")
@@ -38,69 +42,54 @@ X_full = df_wide.drop(columns=['discharge_mrs', 'three_m_mrs', 'stroke_type', 'd
                           'gender', 'hospitalized_in', 'hunt_hess_score', 'ich_score', 'imaging_type', 'no_thrombolysis_reason',
                           'stroke_mimics_diagnosis'])
 
+X_full = X_full.dropna(axis=1, how='all')
+
+
 # Convert to numeric and fill missing
 X_full = X_full.apply(pd.to_numeric, errors='coerce')
+
 X_full = X_full.fillna(X_full.median(numeric_only=True))
+
+print(X_full)
 
 # 7. Randomly select a patient
 random_index = np.random.randint(0, len(X_full))
-
-
-
 X_patient = X_full.iloc[[random_index]]
 subject_id = df_wide.iloc[random_index]['subject_id']
 
 X_full = X_full.drop(columns=['subject_id'], errors='ignore')
 X_patient = X_patient.drop(columns=['subject_id'], errors='ignore')
 
-X_full = X_full.apply(pd.to_numeric, errors='coerce')
-X_patient = X_patient.apply(pd.to_numeric, errors='coerce')
+# Predict the class and probability
+y_pred = xg.predict(X_patient)[0]
+y_proba = xg.predict_proba(X_patient)[0][1]  # probability of mRS ≤ 2
 
-X_full = X_full.fillna(X_full.median(numeric_only=True))
-X_patient = X_patient.fillna(X_patient.median(numeric_only=True))
+print(f"Prediction for subject {subject_id}: mRS ≤ 2 = {bool(y_pred)}, probability = {y_proba:.2f}")
 
-# Show columns with NaNs and their counts
-nan_counts = X_full.isna().sum()
-nan_columns = nan_counts[nan_counts > 0]
+surrogate = DecisionTreeClassifier(max_depth=5, random_state=42)
+surrogate.fit(X_full, xg.predict(X_full))
 
-print("Columns with NaNs:")
-print(nan_columns.sort_values(ascending=False))
+# Visualize it
+plt.figure(figsize=(20, 10))
+plot_tree(surrogate, feature_names=X_full.columns, class_names=['mRS > 2', 'mRS ≤ 2'], filled=True, rounded=True)
+plt.title("Surrogate Tree Explaining XGBoost Predictions")
+plt.show()
 
-assert not X_patient.isnull().values.any(), "X_patient still has NaNs!"
-# Predict the outcome
-y_pred_proba = model.predict_proba(X_patient)[0][1]
-y_pred_class = model.predict(X_patient)[0]
+# Show decision path for selected patient
+node_indicator = surrogate.decision_path(X_patient)
+leaf_id = surrogate.apply(X_patient)
 
-print(f"Prediction for subject_id {subject_id}:")
-print(f"  Probability of good outcome (mRS ≤ 2): {y_pred_proba:.2f}")
-print(f"  Predicted class: {y_pred_class}")
+feature = surrogate.tree_.feature
+threshold = surrogate.tree_.threshold
 
-# Workaround: Add small noise to zero-variance columns (only for LIME)
-X_lime = X_full.copy()
-stds = X_lime.std(numeric_only=True)
-zero_var_cols = stds[stds == 0].index
+print("\nDecision path for the selected patient:")
+for node_id in node_indicator.indices:
+    if leaf_id[0] == node_id:
+        continue  # Skip leaf node
+    feature_name = X_patient.columns[feature[node_id]]
+    threshold_value = threshold[node_id]
+    patient_value = X_patient.iloc[0, feature[node_id]]
+    decision = "<=" if patient_value <= threshold_value else ">"
+    print(f"Node {node_id}: ({feature_name} = {patient_value}) {decision} {threshold_value}")
 
-# Add tiny noise ONLY to zero-variance columns
-for col in zero_var_cols:
-    X_lime[col] += np.random.normal(0, 1e-6, size=len(X_lime))
 
-X_patient_lime = X_lime.iloc[[random_index]]
-
-print(X_full)
-print(X_patient)
-explainer = LimeTabularExplainer(
-    training_data=np.array(X_full),
-    feature_names=X_full.columns.tolist(),
-    class_names=['Poor Outcome', 'Good Outcome'],
-    mode='classification',
-    discretize_continuous=True  # << turn OFF discretization entirely
-)
-
-exp = explainer.explain_instance(
-    data_row=X_patient.iloc[0],
-    predict_fn=model.predict_proba,
-    num_features=10
-)
-
-# or
-exp.save_to_file("lime_explanation.html")
